@@ -316,7 +316,7 @@
     "apiDocsLink": "API Documentation",
     "documentation": {
       "title": "External API Documentation",
-      "description": "Learn how to use the external API to trigger PilotDeck sessions from your applications.",
+      "description": "Learn how to use the external API to trigger G9Claw sessions from your applications.",
       "viewLink": "View API Documentation →"
     },
     "loading": "Loading...",
@@ -367,7 +367,7 @@
         "description": "Google Gemini AI assistant"
       },
       "pilotdeck": {
-        "description": "OpenBMB PilotDeck AI assistant"
+        "description": "G9Claw AI assistant"
       }
     },
     "connectionStatus": "Connection Status",
@@ -466,7 +466,7 @@
   "mcpServers": {
     "title": "MCP Servers",
     "description": {
-      "pilotdeck": "Model Context Protocol servers provide additional tools and data sources to PilotDeck",
+      "pilotdeck": "Model Context Protocol servers provide additional tools and data sources to G9Claw",
       "cursor": "Model Context Protocol servers provide additional tools and data sources to Cursor",
       "codex": "Model Context Protocol servers provide additional tools and data sources to Codex"
     },
@@ -499,7 +499,7 @@
   },
   "mcpConfig": {
     "title": "MCP Servers",
-    "description": "Edit PilotDeck MCP config. Global config lives in ~/.pilotdeck/mcp.json; project config lives in .pilotdeck/mcp.json and overrides global servers with the same name.",
+    "description": "Edit G9Claw MCP config. Global config lives in ~/.pilotdeck/mcp.json; project config lives in .pilotdeck/mcp.json and overrides global servers with the same name.",
     "project": "Project for project-scoped config",
     "scopes": {
       "global": "Global",
@@ -544,7 +544,7 @@
     }
   },
   "pilotDeckConfig": {
-    "loading": "Loading PilotDeck config...",
+    "loading": "Loading G9Claw config...",
     "header": {
       "configFile": "Config file",
       "configPreview": "Config preview",
@@ -637,7 +637,7 @@
       },
       "memory": {
         "label": "Memory",
-        "description": "PilotDeck memory service"
+        "description": "G9Claw memory service"
       },
       "tools": {
         "label": "Search",
@@ -649,7 +649,7 @@
       },
       "router": {
         "label": "Router",
-        "description": "PilotDeck Router"
+        "description": "G9Claw Router"
       },
       "gateway": {
         "label": "Gateway",
@@ -738,7 +738,7 @@
           "label": "Subagents default",
           "description": "Default model for subagents on non-router paths.",
           "inherit": "Inherit main agent model",
-          "routerNote": "When PilotDeck Router or Token Saver is enabled, subagent requests enter the router first. By default, the subagent policy re-judges each subagent turn and picks a tier model. This default only acts as a direct subagent fallback or inherited baseline; it does not override the subagent routing policy in Router advanced settings."
+          "routerNote": "When G9Claw Router or Token Saver is enabled, subagent requests enter the router first. By default, the subagent policy re-judges each subagent turn and picks a tier model. This default only acts as a direct subagent fallback or inherited baseline; it does not override the subagent routing policy in Router advanced settings."
         }
       },
       "customEnv": {
@@ -881,7 +881,7 @@
         }
       },
       "router": {
-        "title": "PilotDeck Router",
+        "title": "G9Claw Router",
         "description": "Embedded router for fan-out across providers (tier-based routing, token saver, auto-orchestrate).",
         "enabled": { "label": "Enabled", "description": "When on, agents use the router instead of the configured provider directly." },
         "advancedToggle": "Advanced settings",

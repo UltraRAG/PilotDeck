@@ -244,7 +244,7 @@ router.post('/apply', async (req, res) => {
 
 /**
  * POST /api/update/restart
- * Restart PilotDeck by spawning a fresh process, then exiting.
+ * Restart G9Claw by spawning a fresh process, then exiting.
  * Works in both Docker (process manager respawns) and local dev (self-respawn).
  */
 router.post('/restart', async (req, res) => {
