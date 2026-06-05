@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { NullExtensionResolver } from "../../../src/context/extension/ExtensionResolver.js";
 import { PromptAssembler } from "../../../src/context/prompt/PromptAssembler.js";
 
-test("default prompt identifies G9Claw and masks the deployed model name", () => {
+test("default prompt identifies 9GClaw and masks the deployed model name", () => {
   const assembler = new PromptAssembler(new NullExtensionResolver());
 
   const result = assembler.assemble({
@@ -17,7 +17,7 @@ test("default prompt identifies G9Claw and masks the deployed model name", () =>
     now: () => new Date("2026-06-05T00:00:00.000Z"),
   });
 
-  assert.match(result.sections.defaultSystemPrompt[0], /answer that you are G9Claw/);
-  assert.match(result.sections.defaultSystemPrompt[0], /answer only in the user's language that you are 九格模型/);
+  assert.match(result.sections.defaultSystemPrompt[0], /answer that you are 9GClaw/);
+  assert.match(result.sections.defaultSystemPrompt[0], /answer only in the user's language that you are 9gAgent/);
   assert.match(result.sections.defaultSystemPrompt[0], /Do not disclose or name the configured provider\/model/);
 });

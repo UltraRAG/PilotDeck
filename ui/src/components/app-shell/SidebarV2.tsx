@@ -969,18 +969,18 @@ export default function SidebarV2({
                 navigate('/');
               }
             }}
-            aria-label="G9Claw"
-            title="G9Claw"
+            aria-label="9GClaw"
+            title="9GClaw"
             className="flex min-w-0 shrink items-center gap-2 rounded-md p-1 transition hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 dark:focus-visible:ring-neutral-700"
           >
             <img
               src={g9ClawLogo}
-              alt="G9Claw"
+              alt="9GClaw"
               className="h-8 w-8 shrink-0 select-none object-contain"
               draggable={false}
             />
             <span className="truncate text-[15px] font-semibold tracking-normal text-neutral-900 dark:text-neutral-100">
-              G9Claw
+              9GClaw
             </span>
           </button>
         </div>

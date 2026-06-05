@@ -50,7 +50,7 @@ export default function AuthScreenLayout({
                 rel="noopener noreferrer"
                 className="text-xs text-muted-foreground/50 transition-colors hover:text-muted-foreground"
               >
-                G9Claw is open source
+                9GClaw is open source
               </a>
             </div>
           )}

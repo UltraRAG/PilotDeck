@@ -42,7 +42,7 @@ const BUNDLED_SKILL_STUBS = [
   {
     name: '/projects',
     description:
-      'List every G9Claw project visible to the TUI, gateway, and UI.',
+      'List every 9GClaw project visible to the TUI, gateway, and UI.',
     metadata: { type: 'bundled-skill' },
   },
   {
@@ -275,7 +275,7 @@ const builtInCommands = [
  */
 const builtInHandlers = {
   '/help': async (args, context) => {
-    const helpText = `# G9Claw Commands
+    const helpText = `# 9GClaw Commands
 
 ## Built-in Commands
 

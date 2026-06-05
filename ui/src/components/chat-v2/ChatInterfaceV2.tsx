@@ -365,7 +365,7 @@ function ChatInterfaceV2({
     <ComposerV2
       input={input}
       placeholder={t('composer.placeholder', {
-        defaultValue: 'Tell G9Claw what you want to get done…',
+        defaultValue: 'Tell 9GClaw what you want to get done…',
       }) as string}
       textareaRef={textareaRef}
       inputHighlightRef={inputHighlightRef}

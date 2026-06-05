@@ -160,7 +160,7 @@ function syncRepoSkillsToPilotHome(pilotHome) {
     if (previous) {
       skippedDuplicateSlug += 1;
       console.warn(
-        `[g9claw] Skipping repo skill '${slug}' at ${sourceDir}; slug already claimed by ${previous}.`,
+        `[9gclaw] Skipping repo skill '${slug}' at ${sourceDir}; slug already claimed by ${previous}.`,
       );
       continue;
     }
@@ -177,7 +177,7 @@ function syncRepoSkillsToPilotHome(pilotHome) {
       created += 1;
     } catch (error) {
       console.warn(
-        `[g9claw] Could not import repo skill '${slug}' into ${targetPath}: ${
+        `[9gclaw] Could not import repo skill '${slug}' into ${targetPath}: ${
           error instanceof Error ? error.message : String(error)
         }`,
       );
@@ -225,10 +225,10 @@ function patchMissingSections(configPath) {
       try {
         appendFileSync(configPath, snippet, 'utf8');
         patched = true;
-        console.log(`[g9claw] Appended missing "${key}" section to ${configPath}.`);
+        console.log(`[9gclaw] Appended missing "${key}" section to ${configPath}.`);
       } catch (error) {
         console.warn(
-          `[g9claw] Could not append "${key}" to ${configPath}: ${
+          `[9gclaw] Could not append "${key}" to ${configPath}: ${
             error instanceof Error ? error.message : String(error)
           }`,
         );
@@ -249,7 +249,7 @@ function main() {
   const skillSync = syncRepoSkillsToPilotHome(pilotHome);
   if (skillSync.created > 0 || skillSync.skippedExisting > 0 || skillSync.skippedDuplicateSlug > 0) {
     console.log(
-      `[g9claw] Synced repo skills into ${join(pilotHome, 'skills')}: ` +
+      `[9gclaw] Synced repo skills into ${join(pilotHome, 'skills')}: ` +
         `${skillSync.created} copied, ${skillSync.skippedExisting} skipped existing, ` +
         `${skillSync.skippedDuplicateSlug} skipped duplicate slug.`,
     );
@@ -264,14 +264,14 @@ function main() {
     mkdirSync(dirname(configPath), { recursive: true });
     writeFileSync(configPath, BOOTSTRAP_YAML, 'utf8');
     console.log(
-      `[g9claw] No config at ${configPath}; wrote a placeholder so the gateway can boot.`,
+      `[9gclaw] No config at ${configPath}; wrote a placeholder so the gateway can boot.`,
     );
-    console.log('[g9claw] Open the Web UI to finish onboarding (provider + API key).');
+    console.log('[9gclaw] Open the Web UI to finish onboarding (provider + API key).');
   } catch (error) {
     console.warn(
-      `[g9claw] Could not bootstrap ${configPath}: ${error instanceof Error ? error.message : String(error)}`,
+      `[9gclaw] Could not bootstrap ${configPath}: ${error instanceof Error ? error.message : String(error)}`,
     );
-    console.warn('[g9claw] You may need to create it manually before running npm run dev.');
+    console.warn('[9gclaw] You may need to create it manually before running npm run dev.');
   }
 }
 
