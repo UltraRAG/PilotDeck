@@ -221,7 +221,7 @@ async function main(argv = process.argv.slice(2)): Promise<void> {
     });
     bindServer(server);
     deferredBroadcast = (name, payload) => server.broadcastNotification(name, payload);
-    console.log(`G9Claw server listening: ${server.url}`);
+    console.log(`9GClaw server listening: ${server.url}`);
     console.log(`WebSocket: ${server.wsUrl}`);
     if (server.tokenPath) {
       console.log(`Token: ${server.tokenPath}`);
@@ -286,14 +286,14 @@ async function main(argv = process.argv.slice(2)): Promise<void> {
       await new TuiChannel({
         projectKey: process.cwd(),
         cwd: process.cwd(),
-        model: "G9Claw",
+        model: "9GClaw",
         probe: { url: probeUrl },
       }).start({ gateway: local });
     } catch (error) {
       await new TuiChannel({
         projectKey: process.cwd(),
         cwd: process.cwd(),
-        model: "G9Claw",
+        model: "9GClaw",
         probe: { url: probeUrl },
       }).start({ gateway: fallbackGateway });
     }
@@ -384,7 +384,7 @@ async function handleCronCommand(argv: string[]): Promise<void> {
     const once = readStringFlag(argv, "--once");
     const cron = readStringFlag(argv, "--cron");
     if (!message || !sessionKey || (!once && !cron)) {
-      console.error("Usage: g9claw cron create --session <sessionKey> --message <text> (--once <iso> | --cron <expr>)");
+      console.error("Usage: 9gclaw cron create --session <sessionKey> --message <text> (--once <iso> | --cron <expr>)");
       process.exitCode = 1;
       return;
     }
@@ -402,7 +402,7 @@ async function handleCronCommand(argv: string[]): Promise<void> {
   if (command === "delete") {
     const taskId = argv[1] ?? readStringFlag(argv, "--task");
     if (!taskId) {
-      console.error("Usage: g9claw cron delete <taskId> [--stop-running]");
+      console.error("Usage: 9gclaw cron delete <taskId> [--stop-running]");
       process.exitCode = 1;
       return;
     }
@@ -414,7 +414,7 @@ async function handleCronCommand(argv: string[]): Promise<void> {
     const taskId = argv[1] ?? readStringFlag(argv, "--task");
     const runId = readStringFlag(argv, "--run");
     if (!taskId && !runId) {
-      console.error("Usage: g9claw cron stop <taskId> or g9claw cron stop --run <runId>");
+      console.error("Usage: 9gclaw cron stop <taskId> or 9gclaw cron stop --run <runId>");
       process.exitCode = 1;
       return;
     }
@@ -422,14 +422,14 @@ async function handleCronCommand(argv: string[]): Promise<void> {
     console.log(JSON.stringify(result, null, 2));
     return;
   }
-  console.error("Usage: g9claw cron <list|create|delete|stop>");
+  console.error("Usage: 9gclaw cron <list|create|delete|stop>");
   process.exitCode = 1;
 }
 
 async function handleSkillsCommand(argv: string[]): Promise<void> {
   const command = argv[0];
   if (command !== "migrate") {
-    console.error("Usage: g9claw skills migrate [--execute] [--from cc,openclaw,hermes] [--source <dir>] [--overwrite|--rename]");
+    console.error("Usage: 9gclaw skills migrate [--execute] [--from cc,openclaw,hermes] [--source <dir>] [--overwrite|--rename]");
     process.exitCode = 1;
     return;
   }
@@ -485,7 +485,7 @@ function parseSkillMigrationSources(value: string | undefined): Array<Exclude<Sk
 
 function printSkillMigrationReport(report: Awaited<ReturnType<typeof migrateSkillsToPilotDeck>>): void {
   const mode = report.mode === "execute" ? "EXECUTED" : "DRY RUN";
-  console.log(`G9Claw skills migration (${mode})`);
+  console.log(`9GClaw skills migration (${mode})`);
   console.log(`Target: ${report.targetRoot}`);
   console.log(
     `Summary: migrated=${report.summary.migrated} would_migrate=${report.summary.would_migrate} ` +
@@ -565,7 +565,7 @@ function createFallbackGateway(): Gateway {
     yield {
       type: "error",
       code: "local_gateway_unavailable",
-      message: `No G9Claw server is available and local config could not start session ${input.sessionKey}.`,
+      message: `No 9GClaw server is available and local config could not start session ${input.sessionKey}.`,
       recoverable: false,
     };
   }

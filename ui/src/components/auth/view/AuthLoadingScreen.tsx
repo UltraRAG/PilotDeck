@@ -9,13 +9,13 @@ export default function AuthLoadingScreen() {
         <div className="mb-4 flex justify-center">
           <img
             src={g9ClawLogo}
-            alt="G9Claw"
+            alt="9GClaw"
             className="h-16 w-16 select-none object-contain"
             draggable={false}
           />
         </div>
 
-        <h1 className="mb-2 text-2xl font-bold text-foreground">G9Claw</h1>
+        <h1 className="mb-2 text-2xl font-bold text-foreground">9GClaw</h1>
 
         <div className="flex items-center justify-center space-x-2">
           {loadingDotAnimationDelays.map((delay) => (

@@ -929,7 +929,7 @@ router.post('/', validateExternalApiKey, async (req, res) => {
       });
     }
 
-    console.log(`🛫 Starting G9Claw gateway session (provider=${provider})`);
+    console.log(`🛫 Starting 9GClaw gateway session (provider=${provider})`);
 
     await runChatViaGateway(
       message.trim(),
@@ -1082,7 +1082,7 @@ router.post('/', validateExternalApiKey, async (req, res) => {
           } else {
             prBody += `Agent task: ${message}`;
           }
-          prBody += '\n\n---\n*This pull request was automatically created by G9Claw Agent.*';
+          prBody += '\n\n---\n*This pull request was automatically created by 9GClaw Agent.*';
 
           console.log(`📝 PR Title: ${prTitle}`);
 

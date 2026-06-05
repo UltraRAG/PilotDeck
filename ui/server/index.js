@@ -199,11 +199,11 @@ async function ensurePilotDeckProxyRunning() {
     const proxyPort = parseInt(process.env.PROXY_PORT || process.env.PILOTDECK_PROXY_PORT || '18080', 10);
     if (!proxyPort) return;
     if (await isLocalPortListening(proxyPort)) {
-        console.log(`${c.info('[INFO]')} Reusing existing G9Claw-friendly proxy on http://127.0.0.1:${proxyPort}`);
+        console.log(`${c.info('[INFO]')} Reusing existing 9GClaw-friendly proxy on http://127.0.0.1:${proxyPort}`);
         return;
     }
 
-    console.error(`[ERROR] G9Claw proxy did not become ready on http://127.0.0.1:${proxyPort}`);
+    console.error(`[ERROR] 9GClaw proxy did not become ready on http://127.0.0.1:${proxyPort}`);
 }
 
 async function stopPilotDeckProxy() {
@@ -707,14 +707,14 @@ app.post('/api/ccr/stats/reset', authenticateToken, (_req, res) => {
     // of silently no-oping.
     res.status(501).json({
         error: 'not_implemented',
-        message: 'Per-project router stats reset is not exposed yet; restart the G9Claw server to clear in-memory state.',
+        message: 'Per-project router stats reset is not exposed yet; restart the 9GClaw server to clear in-memory state.',
     });
 });
 
 app.put('/api/ccr/config', authenticateToken, (_req, res) => {
     res.status(501).json({
         error: 'not_implemented',
-        message: 'Routing configuration is owned by G9Claw config (~/.pilotdeck/pilotdeck.yaml). Edit it directly via /api/config.',
+        message: 'Routing configuration is owned by 9GClaw config (~/.pilotdeck/pilotdeck.yaml). Edit it directly via /api/config.',
     });
 });
 
@@ -2117,7 +2117,7 @@ function handleShellConnection(ws) {
                 if (isPlainShell) {
                     welcomeMsg = `\x1b[36mStarting terminal in: ${projectPath}\x1b[0m\r\n`;
                 } else {
-                    const providerName = provider === 'pilotdeck' ? 'G9Claw' : (provider === 'cursor' ? 'Cursor' : (provider === 'codex' ? 'Codex' : (provider === 'gemini' ? 'Gemini' : 'Claude')));
+                    const providerName = provider === 'pilotdeck' ? '9GClaw' : (provider === 'cursor' ? 'Cursor' : (provider === 'codex' ? 'Codex' : (provider === 'gemini' ? 'Gemini' : 'Claude')));
                     welcomeMsg = hasSession ?
                         `\x1b[36mResuming ${providerName} session ${sessionId} in: ${projectPath}\x1b[0m\r\n` :
                         `\x1b[36mStarting new ${providerName} session in: ${projectPath}\x1b[0m\r\n`;
@@ -3016,7 +3016,7 @@ async function startServer() {
                 const distIndexPath = path.join(__dirname, '../dist/index.html');
                 const isProduction = fs.existsSync(distIndexPath);
 
-                console.log(`${c.info('[INFO]')} Chat execution routed through G9Claw gateway (src/gateway).`);
+                console.log(`${c.info('[INFO]')} Chat execution routed through 9GClaw gateway (src/gateway).`);
                 console.log('');
 
                 if (isProduction) {
@@ -3039,12 +3039,12 @@ async function startServer() {
 
                     console.log('');
                     console.log(c.dim('═'.repeat(63)));
-                    console.log(`  ${c.bright('G9Claw Server - Ready')}`);
+                    console.log(`  ${c.bright('9GClaw Server - Ready')}`);
                     console.log(c.dim('═'.repeat(63)));
                     console.log('');
                     console.log(`${c.info('[INFO]')} Server URL:  ${c.bright('http://' + DISPLAY_HOST + ':' + boundPort)}`);
                     console.log(`${c.info('[INFO]')} Installed at: ${c.dim(appInstallPath)}`);
-                    console.log(`${c.tip('[TIP]')}  Run "g9claw status" for full configuration details`);
+                    console.log(`${c.tip('[TIP]')}  Run "9gclaw status" for full configuration details`);
                     console.log('');
 
                     // Desktop shell loads the UI inside Electron; CLI/dev can opt in to
