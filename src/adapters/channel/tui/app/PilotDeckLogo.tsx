@@ -3,26 +3,24 @@ import { Box, Text, useStdout } from "ink";
 import { pilotDeckDarkBlueTheme } from "./theme.js";
 
 const ANSI_SHADOW_LOGO = [
-  "██████╗ ██╗██╗      ██████╗ ████████╗██████╗ ███████╗ ██████╗██╗  ██╗",
-  "██╔══██╗██║██║     ██╔═══██╗╚══██╔══╝██╔══██╗██╔════╝██╔════╝██║ ██╔╝",
-  "██████╔╝██║██║     ██║   ██║   ██║   ██║  ██║█████╗  ██║     █████╔╝ ",
-  "██╔═══╝ ██║██║     ██║   ██║   ██║   ██║  ██║██╔══╝  ██║     ██╔═██╗ ",
-  "██║     ██║███████╗╚██████╔╝   ██║   ██████╔╝███████╗╚██████╗██║  ██╗",
-  "╚═╝     ╚═╝╚══════╝ ╚═════╝    ╚═╝   ╚═════╝ ╚══════╝ ╚═════╝╚═╝  ╚═╝",
+  " ██████╗  █████╗  ██████╗██╗      █████╗ ██╗    ██╗",
+  "██╔════╝ ██╔══██╗██╔════╝██║     ██╔══██╗██║    ██║",
+  "██║  ███╗╚██████║██║     ██║     ███████║██║ █╗ ██║",
+  "██║   ██║ ╚═══██║██║     ██║     ██╔══██║██║███╗██║",
+  "╚██████╔╝ █████╔╝╚██████╗███████╗██║  ██║╚███╔███╔╝",
+  " ╚═════╝  ╚════╝  ╚═════╝╚══════╝╚═╝  ╚═╝ ╚══╝╚══╝ ",
 ];
 
-// "Pilot" 占 ANSI Shadow logo 前 37 列；"Deck" 占其后。
-const ANSI_SHADOW_PILOT_WIDTH = 37;
-const ANSI_SHADOW_VISIBLE_COLS = 69;
+const ANSI_SHADOW_VISIBLE_COLS = 56;
 // border (2) + paddingX (4) + marginX (2) on the WelcomeCard wrapper.
 const ANSI_SHADOW_MIN_TERMINAL_COLS = ANSI_SHADOW_VISIBLE_COLS + 8;
 
 const STANDARD_LOGO = [
-  "  ____  _ _       _   ____            _    ",
-  " |  _ \\(_) | ___ | |_|  _ \\  ___  ___| | __",
-  " | |_) | | |/ _ \\| __| | | |/ _ \\/ __| |/ /",
-  " |  __/| | | (_) | |_| |_| |  __/ (__|   < ",
-  " |_|   |_|_|\\___/ \\__|____/ \\___|\\___|_|\\_\\",
+  "  ____  ___   ____ _               ",
+  " / ___|/ _ \\ / ___| | __ ___      ",
+  "| |  _| (_) | |   | |/ _` \\ \\ /\\ / /",
+  "| |_| |\\__, | |___| | (_| |\\ V  V / ",
+  " \\____|  /_/ \\____|_|\\__,_| \\_/\\_/  ",
 ];
 
 export function PilotDeckLogo({ tagline }: { tagline?: string } = {}): React.ReactNode {
@@ -34,16 +32,9 @@ export function PilotDeckLogo({ tagline }: { tagline?: string } = {}): React.Rea
     <Box flexDirection="column">
       {useShadow
         ? ANSI_SHADOW_LOGO.map((line, index) => {
-            const pilot = line.slice(0, ANSI_SHADOW_PILOT_WIDTH);
-            const deck = line.slice(ANSI_SHADOW_PILOT_WIDTH);
             return (
-              <Text key={index}>
-                <Text color={pilotDeckDarkBlueTheme.brand} bold>
-                  {pilot}
-                </Text>
-                <Text color={pilotDeckDarkBlueTheme.brandAccent} bold>
-                  {deck}
-                </Text>
+              <Text key={index} color={pilotDeckDarkBlueTheme.brandAccent} bold>
+                {line}
               </Text>
             );
           })
@@ -68,10 +59,10 @@ export function CondensedLogo(): React.ReactNode {
   return (
     <Text>
       <Text color={pilotDeckDarkBlueTheme.brand} bold>
-        Pilot
+        G9
       </Text>
       <Text color={pilotDeckDarkBlueTheme.brandAccent} bold>
-        Deck
+        Claw
       </Text>
       <Text color={pilotDeckDarkBlueTheme.brandAccent}> ↗</Text>
     </Text>

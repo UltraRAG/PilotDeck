@@ -1,5 +1,5 @@
 {
-  "name": "pilotdeck",
+  "name": "g9claw",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -7,6 +7,7 @@
     "ui"
   ],
   "bin": {
+    "g9claw": "./dist/src/cli/pilotdeck.js",
     "pilotdeck": "./dist/src/cli/pilotdeck.js"
   },
   "scripts": {
@@ -50,17 +51,5 @@
     "weixin-ilink": "^0.1.0",
     "ws": "^8.21.0",
     "yaml": "^2.8.4"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "bcrypt",
-      "better-sqlite3",
-      "esbuild",
-      "node-pty",
-      "protobufjs",
-      "sharp",
-      "sqlite3",
-      "unrs-resolver"
-    ]
   }
 }

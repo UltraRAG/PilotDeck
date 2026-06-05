@@ -86,13 +86,13 @@ function applyOptions(options) {
 
 function showHelp() {
   console.log(`
-${c.bright('pilotdeck - Command Line Tool')}
+${c.bright('g9claw - Command Line Tool')}
 
 Usage:
-  pilotdeck [command] [options]
+  g9claw [command] [options]
 
 Commands:
-  start          Start the PilotDeck web UI (default)
+  start          Start the G9Claw web UI (default)
   status         Show configuration and data locations
   help           Show this help information
   version        Show version information
@@ -105,12 +105,12 @@ Options:
   -v, --version                 Show version information
 
 Examples:
-  pilotdeck
-  pilotdeck --port 8080
-  pilotdeck status
+  g9claw
+  g9claw --port 8080
+  g9claw status
 
 Configuration:
-  PilotDeck reads ~/.pilotdeck/pilotdeck.yaml by default.
+  G9Claw reads ~/.pilotdeck/pilotdeck.yaml by default.
   First run opens the onboarding UI if no usable config exists.
 `);
 }
