@@ -25,7 +25,7 @@ export const FETCH_TIMEOUT_MS = 60_000;
 export const MAX_REDIRECTS = 10;
 export const MAX_MARKDOWN_LENGTH = 100_000;
 export const WEB_FETCH_USER_AGENT =
-  "PilotDeck/0.1 (+https://github.com/pilotdeck) WebFetch";
+  "G9Claw/0.1 WebFetch";
 
 export type RedirectInfo = {
   type: "redirect";

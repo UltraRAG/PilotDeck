@@ -146,7 +146,7 @@ if [ -n "${PILOTDECK_PROXY:-}" ]; then
   echo "[pilotdeck-docker] Proxy set to $PILOTDECK_PROXY"
 fi
 
-echo "[pilotdeck-docker] Starting PilotDeck (gateway + UI server)..."
+echo "[pilotdeck-docker] Starting G9Claw (gateway + UI server)..."
 echo "[pilotdeck-docker] Config: $CONFIG_FILE"
 echo "[pilotdeck-docker] UI will be available at http://0.0.0.0:${SERVER_PORT:-3001}"
 
