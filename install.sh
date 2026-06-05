@@ -373,7 +373,7 @@ has_playwright_chrome_for_testing() {
 }
 
 echo ""
-echo -e "${BOLD}G9Claw Installer${RESET}"
+echo -e "${BOLD}9GClaw Installer${RESET}"
 echo "====================="
 echo ""
 
@@ -512,7 +512,7 @@ else
     else
       warn "Chrome for Testing install failed (exit code $exit_code)."
     fi
-    warn "G9Claw core features are still available."
+    warn "9GClaw core features are still available."
     warn "To enable browser-use later, run: cd \"$INSTALL_DIR\" && npm run install:browser"
     warn "To increase timeout, set PILOTDECK_BROWSER_INSTALL_TIMEOUT=600 and re-run."
   fi
@@ -743,7 +743,7 @@ echo -e "  Config file:    ${DIM}${CONFIG_FILE}${RESET}"
 echo -e "  CLI command:    ${DIM}${TARGET_BIN}${RESET}"
 echo ""
 
-echo "Starting G9Claw..."
+echo "Starting 9GClaw..."
 echo ""
 export PILOTDECK_CONFIG_PATH="$CONFIG_FILE"
 resolve_runtime_ports

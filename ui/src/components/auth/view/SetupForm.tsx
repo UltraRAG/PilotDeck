@@ -83,14 +83,14 @@ export default function SetupForm() {
 
   return (
     <AuthScreenLayout
-      title="Welcome to G9Claw"
+      title="Welcome to 9GClaw"
       description="Set up your account to get started"
       footerText="This is a single-user system. Only one account can be created."
       logo={
         <div className="flex items-center justify-center">
           <img
             src={g9ClawLogo}
-            alt="G9Claw"
+            alt="9GClaw"
             className="h-16 w-16 select-none object-contain"
             draggable={false}
           />

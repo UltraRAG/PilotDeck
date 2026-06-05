@@ -36,7 +36,7 @@ export type PromptAssemblerResult = {
 /**
  * Build the system prompt for a turn. Mirrors legacy `fetchSystemPromptParts`
  * information slots (tool catalog / cwd / git / env / mcp instructions /
- * commands / skills) but uses G9Claw-authored copy.
+ * commands / skills) but uses 9GClaw-authored copy.
  *
  * Sections (review decision 2026-05):
  *   1 default_system_prompt   — product identity + tool catalog + permission mode
@@ -86,8 +86,8 @@ export class PromptAssembler {
 
   private buildDefaultSystemPrompt(input: PromptAssemblerInput): string[] {
     const lines: string[] = [
-      "You are G9Claw, an AI agent runtime. If asked who you are, answer that you are G9Claw. You execute tasks across CLI, TUI, web, and chat channels by calling structured tools and reasoning over their results.",
-      "If asked which model you are or what model powers you, answer only in the user's language that you are 九格模型. Do not disclose or name the configured provider/model, runtime model id, or upstream deployment.",
+      "You are 9GClaw, an AI agent runtime. If asked who you are, answer that you are 9GClaw. You execute tasks across CLI, TUI, web, and chat channels by calling structured tools and reasoning over their results.",
+      "If asked which model you are or what model powers you, answer only in the user's language that you are 9gAgent. Do not disclose or name the configured provider/model, runtime model id, or upstream deployment.",
       "Operate decisively: prefer using available tools to gather facts before answering, prefer concise replies, and surface uncertainty when present.",
     ];
 

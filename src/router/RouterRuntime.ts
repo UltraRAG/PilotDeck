@@ -404,7 +404,7 @@ export function createRouterRuntime(
         if (estimated > budget) {
           yield {
             type: "text_delta",
-            text: `[G9Claw] Sub-agent budget exceeded (${estimated} est. tokens > ${budget} limit). Terminating.`,
+            text: `[9GClaw] Sub-agent budget exceeded (${estimated} est. tokens > ${budget} limit). Terminating.`,
           } as CanonicalModelEvent;
           yield { type: "message_end", finishReason: "stop" } as CanonicalModelEvent;
           return;
@@ -507,7 +507,7 @@ export function createRouterRuntime(
               transientMaxDelayMs,
             );
             console.warn(
-              `[G9Claw] transientRetry: ${outcome.error.code} (attempt ${transientRetryCount + 1}/${transientRetryMax}, delay=${Math.round(delay)}ms)`,
+              `[9GClaw] transientRetry: ${outcome.error.code} (attempt ${transientRetryCount + 1}/${transientRetryMax}, delay=${Math.round(delay)}ms)`,
             );
             events.emit({
               type: "pilotdeck_router_transient_retry",
@@ -556,7 +556,7 @@ export function createRouterRuntime(
           zeroUsageAttempt < zeroUsageMax
         ) {
           console.warn(
-            `[G9Claw] zeroUsageRetry: empty response from ${attempt.provider}/${attempt.model} ` +
+            `[9GClaw] zeroUsageRetry: empty response from ${attempt.provider}/${attempt.model} ` +
             `(attempt ${zeroUsageAttempt}/${zeroUsageMax}, session=${ctx.sessionId})`,
           );
           events.emit({
