@@ -5,7 +5,6 @@ import {
   Bot,
   Brain,
   Check,
-  CheckCircle2,
   ChevronLeft,
   ChevronDown,
   ChevronRight,
@@ -16,22 +15,18 @@ import {
   Gauge,
   Image as ImageIcon,
   Info,
-  Loader2,
   Plus,
   RefreshCw,
   Route,
   Save,
-  Search,
   Server,
   Trash2,
   Wifi,
-  XCircle,
   Zap,
   type LucideIcon,
 } from 'lucide-react';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
 import { Button } from '../../../../shared/view/ui';
-import { authenticatedFetch } from '../../../../utils/api';
 import { isImeEnterEvent } from '../../../../utils/ime';
 import { usePilotDeckConfig, type ConfigReload } from '../../../../hooks/usePilotDeckConfig';
 import {
@@ -180,29 +175,9 @@ type PilotDeckConfig = {
     };
   } & Record<string, unknown>;
   gateway?: { enabled?: boolean; home?: string } & Record<string, unknown>;
-  tools?: {
-    webSearch?: {
-      provider?: 'glm' | 'tavily' | 'custom';
-      apiKey?: string;
-      endpoint?: string;
-      customProvider?: {
-        name?: string;
-        auth?: 'bearer' | 'bodyApiKey' | 'queryApiKey' | 'none';
-        method?: 'GET' | 'POST';
-        queryParam?: string;
-        apiKeyParam?: string;
-        resultsPath?: string;
-        titleField?: string;
-        urlField?: string;
-        snippetField?: string;
-        sourceField?: string;
-        publishedAtField?: string;
-      };
-    };
-  };
 };
 
-type SectionId = 'models' | 'agents' | 'memory' | 'tools' | 'router' | 'gateway' | 'customEnv' | 'alwaysOn' | 'cron' | 'advanced';
+type SectionId = 'models' | 'agents' | 'memory' | 'router' | 'gateway' | 'customEnv' | 'alwaysOn' | 'cron' | 'advanced';
 
 const SECTIONS: Array<{ id: SectionId; labelKey: string; descriptionKey: string }> = [
   { id: 'advanced',  labelKey: 'runtime',   descriptionKey: 'runtime' },
@@ -211,7 +186,6 @@ const SECTIONS: Array<{ id: SectionId; labelKey: string; descriptionKey: string 
   { id: 'alwaysOn',  labelKey: 'alwaysOn',  descriptionKey: 'alwaysOn' },
   { id: 'cron',      labelKey: 'cron',      descriptionKey: 'cron' },
   { id: 'memory',    labelKey: 'memory',    descriptionKey: 'memory' },
-  { id: 'tools',     labelKey: 'tools',     descriptionKey: 'tools' },
   { id: 'router',    labelKey: 'router',    descriptionKey: 'router' },
   { id: 'gateway',   labelKey: 'gateway',   descriptionKey: 'gateway' },
   { id: 'customEnv', labelKey: 'customEnv', descriptionKey: 'customEnv' },
@@ -219,7 +193,7 @@ const SECTIONS: Array<{ id: SectionId; labelKey: string; descriptionKey: string 
 
 const SECTION_GROUPS: Array<{ id: 'basic' | 'features' | 'advanced'; sections: SectionId[] }> = [
   { id: 'basic', sections: ['models', 'agents'] },
-  { id: 'features', sections: ['router', 'memory', 'tools', 'alwaysOn', 'cron', 'gateway'] },
+  { id: 'features', sections: ['router', 'memory', 'alwaysOn', 'cron', 'gateway'] },
   { id: 'advanced', sections: ['advanced', 'customEnv'] },
 ];
 
@@ -228,7 +202,6 @@ const SECTION_ICONS: Record<SectionId, LucideIcon> = {
   agents: Bot,
   router: Route,
   memory: Brain,
-  tools: Search,
   alwaysOn: Zap,
   cron: Clock,
   gateway: Wifi,
@@ -452,11 +425,6 @@ function secretDisplayValue(value: string | undefined): string {
   if (value === 'PLACEHOLDER_RUN_ONBOARDING_TO_REPLACE') return '';
   if (value.startsWith('PLACEHOLDER_')) return '';
   return value;
-}
-
-function hasUsableSecret(value: string | undefined): boolean {
-  const trimmed = (value ?? '').trim();
-  return Boolean(trimmed) && !isMaskedSecret(trimmed) && trimmed !== 'PLACEHOLDER_RUN_ONBOARDING_TO_REPLACE' && !trimmed.startsWith('PLACEHOLDER_');
 }
 
 function providerDisplayName(providerId: string, catalogEntry?: CatalogProvider, emptyFallback = 'Custom Provider'): string {
@@ -1423,12 +1391,7 @@ function AgentsSection({ config, onChange }: { config: PilotDeckConfig; onChange
   );
 }
 
-const WELL_KNOWN_ENV_KEYS = [
-  { key: 'TAVILY_API_KEY', hint: 'Tavily web search API key' },
-  { key: 'FIRECRAWL_API_KEY', hint: 'Firecrawl web scraping API key' },
-  { key: 'SERPER_API_KEY', hint: 'Serper search API key' },
-  { key: 'BROWSERBASE_API_KEY', hint: 'Browserbase API key' },
-];
+const WELL_KNOWN_ENV_KEYS: Array<{ key: string; hint: string }> = [];
 
 function CustomEnvSection({ config, onChange }: { config: PilotDeckConfig; onChange: (next: PilotDeckConfig) => void }) {
   const { t } = useTranslation('settings');
@@ -1904,280 +1867,6 @@ function MemorySection({ config, onChange }: { config: PilotDeckConfig; onChange
             />
           </FormRow>
         )}
-      </SettingsCard>
-    </SettingsSection>
-  );
-}
-
-function ToolsSection({ config, onChange }: { config: PilotDeckConfig; onChange: (next: PilotDeckConfig) => void }) {
-  const { t } = useTranslation('settings');
-  const glmDefaultEndpoint = 'https://api.z.ai/api/paas/v4/web_search';
-  const ws = config.tools?.webSearch ?? {};
-  const provider = ws.provider === 'tavily' || ws.provider === 'custom' ? ws.provider : 'glm';
-  const apiKey = typeof ws.apiKey === 'string' ? ws.apiKey : '';
-  const endpoint = typeof ws.endpoint === 'string' ? ws.endpoint : '';
-  const custom = ws.customProvider ?? {};
-  const endpointValue = endpoint || (provider === 'glm' ? glmDefaultEndpoint : '');
-  const endpointPlaceholder = provider === 'custom'
-    ? 'https://example.com/search'
-    : provider === 'tavily'
-      ? 'https://api.tavily.com/search'
-      : glmDefaultEndpoint;
-
-  // Test-connection state — modeled after onboarding's LlmConfigurationStep
-  // so behaviour and accessibility match across the app. Reset whenever the
-  // user edits the key or endpoint so a stale ✓ never lies about new input.
-  const [testStatus, setTestStatus] = useState<'idle' | 'testing' | 'success' | 'error'>('idle');
-  const [testMessage, setTestMessage] = useState('');
-
-  const resetTest = () => {
-    setTestStatus('idle');
-    setTestMessage('');
-  };
-
-  const setProvider = (nextProvider: 'glm' | 'tavily' | 'custom') => {
-    const nextTools = {
-      webSearch: {
-        provider: nextProvider,
-        ...(nextProvider === 'glm' ? { endpoint: glmDefaultEndpoint } : {}),
-      },
-    };
-    onChange(patch(config, ['tools'], nextTools));
-    resetTest();
-  };
-
-  const setField = (field: 'apiKey' | 'endpoint', value: string) => {
-    const trimmed = value;
-    const nextWs: NonNullable<PilotDeckConfig['tools']>['webSearch'] = { ...ws };
-    nextWs.provider = provider;
-    if (trimmed === '') {
-      delete nextWs[field];
-    } else {
-      nextWs[field] = trimmed;
-    }
-    const nextTools = Object.keys(nextWs).length > 0 ? { webSearch: nextWs } : undefined;
-    onChange(patch(config, ['tools'], nextTools));
-    resetTest();
-  };
-
-  const setCustomField = (
-    field: keyof NonNullable<NonNullable<PilotDeckConfig['tools']>['webSearch']>['customProvider'],
-    value: string,
-  ) => {
-    const nextWs: NonNullable<PilotDeckConfig['tools']>['webSearch'] = {
-      ...ws,
-      provider: 'custom',
-      customProvider: { ...(ws.customProvider ?? {}) },
-    };
-    if (value === '') {
-      delete nextWs.customProvider?.[field];
-    } else if (field === 'auth') {
-      nextWs.customProvider![field] = value as 'bearer' | 'bodyApiKey' | 'queryApiKey' | 'none';
-    } else if (field === 'method') {
-      nextWs.customProvider![field] = value as 'GET' | 'POST';
-    } else {
-      nextWs.customProvider![field] = value;
-    }
-    if (Object.keys(nextWs.customProvider ?? {}).length === 0) {
-      delete nextWs.customProvider;
-    }
-    onChange(patch(config, ['tools'], { webSearch: nextWs }));
-    resetTest();
-  };
-
-  const handleTest = async () => {
-    const trimmedKey = hasUsableSecret(apiKey) ? apiKey.trim() : '';
-    if (!trimmedKey) {
-      setTestStatus('error');
-      setTestMessage(t('pilotDeckConfig.panels.tools.test.needsKey'));
-      return;
-    }
-    setTestStatus('testing');
-    setTestMessage('');
-    try {
-      const res = await authenticatedFetch('/api/config/test-web-search', {
-        method: 'POST',
-        body: JSON.stringify({ provider, apiKey: trimmedKey, endpoint: endpointValue.trim(), customProvider: custom }),
-      });
-      const data = await res.json();
-      if (data.ok) {
-        setTestStatus('success');
-        setTestMessage(
-          t('pilotDeckConfig.panels.tools.test.success', {
-            count: data.organicCount ?? 0,
-            latency: data.latencyMs ?? 0,
-          }),
-        );
-      } else {
-        setTestStatus('error');
-        setTestMessage(
-          t('pilotDeckConfig.panels.tools.test.failedPrefix', { error: data.error || 'unknown' }),
-        );
-      }
-    } catch (err) {
-      setTestStatus('error');
-      setTestMessage(
-        t('pilotDeckConfig.panels.tools.test.failedPrefix', {
-          error: err instanceof Error ? err.message : String(err),
-        }),
-      );
-    }
-  };
-
-  return (
-    <SettingsSection
-      title={t('pilotDeckConfig.panels.tools.title')}
-      description={t('pilotDeckConfig.panels.tools.description')}
-    >
-      <SettingsCard divided>
-        <FormRow
-          label={t('pilotDeckConfig.panels.tools.provider.label')}
-          description={t('pilotDeckConfig.panels.tools.provider.description')}
-        >
-          <Select
-            value={provider}
-            options={[
-              { value: 'glm', label: t('pilotDeckConfig.panels.tools.provider.glm') },
-              { value: 'tavily', label: t('pilotDeckConfig.panels.tools.provider.tavily') },
-              { value: 'custom', label: t('pilotDeckConfig.panels.tools.provider.custom') },
-            ]}
-            onChange={(v) => setProvider(v === 'custom' ? 'custom' : v === 'tavily' ? 'tavily' : 'glm')}
-          />
-        </FormRow>
-        <FormRow
-          label={t('pilotDeckConfig.panels.tools.apiKey.label')}
-          description={t('pilotDeckConfig.panels.tools.apiKey.description')}
-        >
-          <SecretTextInput
-            value={apiKey}
-            emptyPlaceholder={t('pilotDeckConfig.panels.tools.apiKey.placeholder')}
-            maskedPlaceholder={t('pilotDeckConfig.panels.tools.apiKey.maskedPlaceholder')}
-            monospace
-            onChange={(v) => setField('apiKey', v)}
-          />
-          {isMaskedSecret(apiKey) && (
-            <p className="mt-1 flex items-center gap-1 text-[11px] text-muted-foreground">
-              <Info className="h-3 w-3" />
-              {t('pilotDeckConfig.panels.tools.apiKey.keyHidden')}
-            </p>
-          )}
-        </FormRow>
-        <FormRow
-          label={t('pilotDeckConfig.panels.tools.endpoint.label')}
-          description={t('pilotDeckConfig.panels.tools.endpoint.description')}
-        >
-          <TextInput
-            value={endpointValue}
-            placeholder={endpointPlaceholder}
-            monospace
-            onChange={(v) => setField('endpoint', v)}
-          />
-        </FormRow>
-        {provider === 'custom' && (
-          <>
-            <FormRow
-              label={t('pilotDeckConfig.panels.tools.custom.name.label')}
-              description={t('pilotDeckConfig.panels.tools.custom.name.description')}
-            >
-              <TextInput
-                value={custom.name ?? ''}
-                placeholder="My Search"
-                onChange={(v) => setCustomField('name', v)}
-              />
-            </FormRow>
-            <FormRow
-              label={t('pilotDeckConfig.panels.tools.custom.auth.label')}
-              description={t('pilotDeckConfig.panels.tools.custom.auth.description')}
-            >
-              <Select
-                value={custom.auth ?? 'bearer'}
-                options={[
-                  { value: 'bearer', label: t('pilotDeckConfig.panels.tools.custom.auth.bearer') },
-                  { value: 'bodyApiKey', label: t('pilotDeckConfig.panels.tools.custom.auth.bodyApiKey') },
-                  { value: 'queryApiKey', label: t('pilotDeckConfig.panels.tools.custom.auth.queryApiKey') },
-                  { value: 'none', label: t('pilotDeckConfig.panels.tools.custom.auth.none') },
-                ]}
-                onChange={(v) => setCustomField('auth', v)}
-              />
-            </FormRow>
-            <FormRow
-              label={t('pilotDeckConfig.panels.tools.custom.method.label')}
-              description={t('pilotDeckConfig.panels.tools.custom.method.description')}
-            >
-              <Select
-                value={custom.method ?? 'POST'}
-                options={[
-                  { value: 'POST', label: 'POST' },
-                  { value: 'GET', label: 'GET' },
-                ]}
-                onChange={(v) => setCustomField('method', v)}
-              />
-            </FormRow>
-            <FormRow
-              label={t('pilotDeckConfig.panels.tools.custom.params.label')}
-              description={t('pilotDeckConfig.panels.tools.custom.params.description')}
-            >
-              <div className="grid gap-2 md:grid-cols-2">
-                <TextInput
-                  value={custom.queryParam ?? ''}
-                  placeholder="query"
-                  monospace
-                  onChange={(v) => setCustomField('queryParam', v)}
-                />
-                <TextInput
-                  value={custom.apiKeyParam ?? ''}
-                  placeholder="api_key"
-                  monospace
-                  onChange={(v) => setCustomField('apiKeyParam', v)}
-                />
-              </div>
-            </FormRow>
-            <FormRow
-              label={t('pilotDeckConfig.panels.tools.custom.mapping.label')}
-              description={t('pilotDeckConfig.panels.tools.custom.mapping.description')}
-            >
-              <div className="grid gap-2 md:grid-cols-2">
-                <TextInput value={custom.resultsPath ?? ''} placeholder="data.items" monospace onChange={(v) => setCustomField('resultsPath', v)} />
-                <TextInput value={custom.titleField ?? ''} placeholder="title" monospace onChange={(v) => setCustomField('titleField', v)} />
-                <TextInput value={custom.urlField ?? ''} placeholder="url" monospace onChange={(v) => setCustomField('urlField', v)} />
-                <TextInput value={custom.snippetField ?? ''} placeholder="snippet" monospace onChange={(v) => setCustomField('snippetField', v)} />
-                <TextInput value={custom.sourceField ?? ''} placeholder="source" monospace onChange={(v) => setCustomField('sourceField', v)} />
-                <TextInput value={custom.publishedAtField ?? ''} placeholder="publishedAt" monospace onChange={(v) => setCustomField('publishedAtField', v)} />
-              </div>
-            </FormRow>
-          </>
-        )}
-        <div className="flex flex-col gap-2 px-4 py-3">
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleTest}
-              disabled={testStatus === 'testing' || !hasUsableSecret(apiKey)}
-            >
-              {testStatus === 'testing' ? (
-                <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
-              ) : (
-                <RefreshCw className="mr-1.5 h-3.5 w-3.5" />
-              )}
-              {testStatus === 'testing'
-                ? t('pilotDeckConfig.panels.tools.test.testing')
-                : t('pilotDeckConfig.panels.tools.test.button')}
-            </Button>
-            {testStatus === 'success' && (
-              <span className="inline-flex items-center gap-1.5 text-xs text-green-700 dark:text-green-400">
-                <CheckCircle2 className="h-3.5 w-3.5" />
-                {testMessage}
-              </span>
-            )}
-            {testStatus === 'error' && (
-              <span className="inline-flex items-center gap-1.5 text-xs text-destructive">
-                <XCircle className="h-3.5 w-3.5" />
-                {testMessage}
-              </span>
-            )}
-          </div>
-        </div>
       </SettingsCard>
     </SettingsSection>
   );
@@ -3346,7 +3035,6 @@ export default function PilotDeckConfigTab({ projects = [] }: { projects?: Setti
               {activeSection === 'models' && <ModelsSection config={parsedConfig} onChange={onFormChange} />}
               {activeSection === 'agents' && <AgentsSection config={parsedConfig} onChange={onFormChange} />}
               {activeSection === 'memory' && <MemorySection config={parsedConfig} onChange={onFormChange} />}
-              {activeSection === 'tools' && <ToolsSection config={parsedConfig} onChange={onFormChange} />}
               {activeSection === 'router' && <RouterSection config={parsedConfig} onChange={onFormChange} />}
               {activeSection === 'gateway' && <GatewaySection config={parsedConfig} onChange={onFormChange} />}
               {activeSection === 'customEnv' && <CustomEnvSection config={parsedConfig} onChange={onFormChange} />}

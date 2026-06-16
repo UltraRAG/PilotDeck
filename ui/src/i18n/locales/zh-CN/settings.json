@@ -639,10 +639,6 @@
         "label": "记忆",
         "description": "9GClaw 记忆服务"
       },
-      "tools": {
-        "label": "搜索",
-        "description": "Web 搜索提供商"
-      },
       "customEnv": {
         "label": "环境变量",
         "description": "跨会话持久化的自定义环境变量"
@@ -822,62 +818,6 @@
           "label": "记忆模型",
           "description": "记忆管线使用的提供商/模型。",
           "inherit": "继承（使用主智能体模型）"
-        }
-      },
-      "tools": {
-        "title": "搜索",
-        "description": "配置智能体 web_search 工具使用的搜索服务。",
-        "provider": {
-          "label": "搜索提供商",
-          "description": "当前启用的搜索服务。",
-          "glm": "GLM / Z.AI Web Search",
-          "tavily": "Tavily",
-          "custom": "自定义"
-        },
-        "apiKey": {
-          "label": "API 密钥",
-          "description": "当前提供商的 API 密钥。",
-          "placeholder": "提供商 API Key",
-          "maskedPlaceholder": "已保留现有密钥，如需替换请重新输入",
-          "keyHidden": "密钥已隐藏；留空会继续保留，重新输入可替换。"
-        },
-        "endpoint": {
-          "label": "接口地址",
-          "description": "自定义接口地址，留空使用默认地址。",
-          "placeholder": "默认接口地址"
-        },
-        "custom": {
-          "name": {
-            "label": "名称",
-            "description": "自定义搜索服务的名称。"
-          },
-          "auth": {
-            "label": "鉴权方式",
-            "description": "API Key 的传递方式。",
-            "bearer": "Bearer header",
-            "bodyApiKey": "API Key 放在 JSON body",
-            "queryApiKey": "API Key 放在 query string",
-            "none": "不使用 API Key"
-          },
-          "method": {
-            "label": "HTTP 方法",
-            "description": "请求方法。"
-          },
-          "params": {
-            "label": "参数名",
-            "description": "搜索词和 API Key 的参数名。"
-          },
-          "mapping": {
-            "label": "结果字段映射",
-            "description": "从响应中读取搜索结果的字段。"
-          }
-        },
-        "test": {
-          "button": "测试连接",
-          "testing": "测试中…",
-          "needsKey": "请先填写 API Key。",
-          "success": "连接正常：{{count}} 条结果，{{latency}}ms。",
-          "failedPrefix": "连接失败：{{error}}"
         }
       },
       "router": {

@@ -639,10 +639,6 @@
         "label": "Memory",
         "description": "9GClaw memory service"
       },
-      "tools": {
-        "label": "Search",
-        "description": "Web search provider"
-      },
       "customEnv": {
         "label": "Env Vars",
         "description": "Custom environment variables for sessions"
@@ -822,62 +818,6 @@
           "label": "Memory Model",
           "description": "Provider/model the memory pipeline calls.",
           "inherit": "inherit (use main agent's model)"
-        }
-      },
-      "tools": {
-        "title": "Search",
-        "description": "Configure the search service used by the agent's web_search tool.",
-        "provider": {
-          "label": "Search provider",
-          "description": "The active search service.",
-          "glm": "GLM / Z.AI Web Search",
-          "tavily": "Tavily",
-          "custom": "Custom"
-        },
-        "apiKey": {
-          "label": "API key",
-          "description": "API key for the selected provider.",
-          "placeholder": "provider API key",
-          "maskedPlaceholder": "Existing key kept — type to replace",
-          "keyHidden": "Key hidden; leave as-is to keep, retype to replace."
-        },
-        "endpoint": {
-          "label": "Endpoint",
-          "description": "Custom endpoint. Leave empty to use the default.",
-          "placeholder": "Default endpoint"
-        },
-        "custom": {
-          "name": {
-            "label": "Name",
-            "description": "Name of this custom search service."
-          },
-          "auth": {
-            "label": "Auth",
-            "description": "How the API key is sent.",
-            "bearer": "Bearer header",
-            "bodyApiKey": "API key in JSON body",
-            "queryApiKey": "API key in query string",
-            "none": "No API key"
-          },
-          "method": {
-            "label": "HTTP method",
-            "description": "Request method."
-          },
-          "params": {
-            "label": "Parameter names",
-            "description": "Parameter names for the query and API key."
-          },
-          "mapping": {
-            "label": "Result mapping",
-            "description": "Fields used to read search results from the response."
-          }
-        },
-        "test": {
-          "button": "Test connection",
-          "testing": "Testing…",
-          "needsKey": "Enter an API key first.",
-          "success": "Connected: {{count}} result(s), {{latency}}ms.",
-          "failedPrefix": "Connection failed: {{error}}"
         }
       },
       "router": {

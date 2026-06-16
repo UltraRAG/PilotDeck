@@ -25,9 +25,9 @@ import { ToolRegistry } from "./ToolRegistry.js";
 export type CreateBuiltinRegistryOptions = {
   bash?: CreateBashToolOptions;
   /**
-   * `web_search` defaults to the GLM/Z.AI provider. Pass `false` to skip
-   * registering web_search; pass an options object to select GLM or Tavily
-   * and customize apiKey / endpoint.
+   * `web_search` is opt-in. Pass an options object to register it and select
+   * GLM, Tavily, or a custom provider. Offline deployments leave this unset so
+   * the model never receives a web-search tool schema.
    */
   webSearch?: CreateWebSearchToolOptions | false;
   /**
@@ -40,11 +40,11 @@ export type CreateBuiltinRegistryOptions = {
    */
   agent?: CreateAgentToolOptions | boolean;
   /**
-   * `web_fetch` builtin tool. **Opt-in** (default: registered) because it
-   * issues HTTP requests and a secondary model call. Pass `false` to skip.
-   * Pass an options object to override the provider / model id used for the
-   * secondary model call. Without a model client the tool returns the raw
-   * markdown without summarization.
+   * `web_fetch` builtin tool. Opt-in because it issues HTTP requests and may
+   * make a secondary model call. Pass an options object to register it and
+   * override the provider / model id used for the secondary model call. Offline
+   * deployments leave this unset so the model never receives a web-fetch tool
+   * schema.
    */
   webFetch?: CreateWebFetchToolOptions | false;
   /**
@@ -93,10 +93,10 @@ export function createBuiltinRegistry(options?: CreateBuiltinRegistryOptions): T
   registry.register(createEditNotebookTool());
   registry.register(createWriteFileTool());
   registry.register(createBashTool(options?.bash));
-  if (options?.webSearch !== false) {
+  if (options?.webSearch) {
     registry.register(createWebSearchTool(options?.webSearch));
   }
-  if (options?.webFetch !== false) {
+  if (options?.webFetch) {
     registry.register(createWebFetchTool(options?.webFetch));
   }
   if (options?.agent !== false) {

@@ -44,7 +44,7 @@ export class PermissionRuntime {
 
     // Check user-configured allow rules BEFORE consulting the tool's own
     // checkPermissions, so an explicit "Allow + remember" grant wins
-    // over a tool that hardcodes ask (web_fetch / web_search do this).
+    // over a tool that hardcodes ask.
     // Without this ordering, the user's grant is effectively ignored:
     // tool.checkPermissions returns ask → runtime surfaces another
     // permission prompt → next call repeats → infinite prompts.
@@ -77,8 +77,8 @@ export class PermissionRuntime {
       if (toolDecision.type === "ask") {
         // `bypassPermissions` mode is the user's explicit "approve
         // everything" escape hatch. Tools that hardcode `ask` in
-        // `checkPermissions` (web_search, web_fetch, agent dispatch,
-        // mcp tools, …) would otherwise still prompt — defeating the
+        // `checkPermissions` (agent dispatch, mcp tools, etc.) would
+        // otherwise still prompt — defeating the
         // mode's whole purpose. Treat the tool's `ask` the same way
         // we'd treat a missing `checkPermissions` and fall through
         // to mode-level allow. User-configured `ask` rules already

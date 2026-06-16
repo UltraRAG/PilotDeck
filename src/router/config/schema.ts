@@ -100,7 +100,7 @@ export const DEFAULT_TIER_DESCRIPTIONS: Record<string, string> = {
   simple: "Simple greetings, confirmations, single-step Q&A, trivial file writes, remembering rules",
   medium: "Single tool call, short text generation, 1-2 file read/write, code generation",
   complex: "Needs sub-agent orchestration: parallel workstreams, delegation to specialized agents",
-  reasoning: "Deep single-agent work: multi-file operations, data analysis, multi-step workflows, web research, structured reports from many sources",
+  reasoning: "Deep single-agent work: multi-file operations, data analysis, multi-step workflows, structured reports from many sources",
 };
 
 export const DEFAULT_TIER_RULES: string[] = [
@@ -116,8 +116,6 @@ export const DEFAULT_ALLOWED_TOOLS = [
 ];
 export const DEFAULT_BLOCKED_TOOLS = [
   "mcp__browser-use__",
-  "web_search",
-  "web_fetch",
 ];
 
 export const DEFAULT_ORCHESTRATION_PROMPT = `# Orchestrator mode — plan and delegate
@@ -135,7 +133,7 @@ You may ONLY call:
 - \`grep\`       — search for patterns across the codebase
 - \`glob\`       — find files by name pattern
 
-Everything else (\`bash\`, \`write_file\`, \`edit_file\`, \`web_search\`, \`web_fetch\`, …) is
+Everything else outside this whitelist, including \`bash\`, \`write_file\`, and \`edit_file\`, is
 **blocked** for you. Sub-agents inherit your full tool permissions and will execute
 on your behalf.
 

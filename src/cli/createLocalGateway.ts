@@ -567,26 +567,12 @@ class ProjectRuntimeRegistry {
       telemetry: this.options.telemetry,
     });
     const backgroundTasks = new BackgroundTaskRuntime({ now: this.options.now });
-    const webSearchConfig = snapshot.config.tools?.webSearch;
     const tools = createBuiltinRegistry({
       backgroundTasks: { runtime: backgroundTasks },
       readSkill: {
         loader: (name) => pluginRuntime.loadSkillPrompt(name),
         lister: () => pluginRuntime.getAllSkills(),
       },
-      // Pass the YAML-configured web-search provider through to the built-in
-      // `web_search` tool. When absent, the tool may infer GLM/Tavily from
-      // provider-specific environment variables.
-      ...(webSearchConfig
-        ? {
-            webSearch: {
-              ...(webSearchConfig.provider ? { provider: webSearchConfig.provider } : {}),
-              ...(webSearchConfig.apiKey ? { apiKey: webSearchConfig.apiKey } : {}),
-              ...(webSearchConfig.endpoint ? { endpoint: webSearchConfig.endpoint } : {}),
-              ...(webSearchConfig.customProvider ? { customProvider: webSearchConfig.customProvider } : {}),
-            },
-          }
-        : {}),
     });
     for (const tool of this._extraTools) {
       tools.register(tool);

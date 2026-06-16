@@ -1146,7 +1146,7 @@ export class AgentLoop {
       env: this.config.env,
       maxResultBytes: this.config.maxResultBytes,
       // Tools that need a secondary model call (e.g. `agent` subagents in
-      // fallback mode, `web_fetch` extraction) get a thin adapter that
+      // fallback mode or secondary content extraction) get a thin adapter that
       // funnels into the router's stream so subagents inherit fallback /
       // zero-usage retry.
       model: {

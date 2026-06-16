@@ -27,7 +27,7 @@ export type PilotDeckToolFileHistorySink = {
 
 /**
  * Minimal model client surface tools may use to issue secondary model calls
- * (e.g. `agent` subagent prompts, `web_fetch` content extraction). Mirrors
+ * (e.g. `agent` subagent prompts or secondary content extraction). Mirrors
  * `AgentModelRuntime` but lives in the tool protocol to avoid a tool→agent
  * dependency cycle.
  */
@@ -199,7 +199,7 @@ export type PilotDeckToolRuntimeContext = {
   progress?: PilotDeckToolProgressSink;
   /**
    * Optional model client for tools that need to issue secondary model calls
-   * (e.g. `agent` subagent prompts, `web_fetch` content extraction). Absent
+   * (e.g. `agent` subagent prompts or secondary content extraction). Absent
    * when the caller didn't provide one — affected tools must report
    * `unsupported_tool` with a clear hint instead of failing silently.
    */

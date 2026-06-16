@@ -355,9 +355,6 @@ export function buildRuntimeEnv(config) {
     env.PILOTDECK_MAX_OUTPUT_TOKENS = process.env.PILOTDECK_MAX_OUTPUT_TOKENS;
   }
 
-  const tavilyKey = mainParams.tavilyApiKey ?? mainParams.tavily_api_key ?? process.env.TAVILY_API_KEY;
-  if (tavilyKey) env.TAVILY_API_KEY = String(tavilyKey);
-
   // Memory uses memory.model (or inherits agent.model when blank).
   const memoryRef = normalizeString(normalized.memory?.model) || normalized.agent.model;
   const memory = resolveModel(normalized, memoryRef, { allowMissing: true });

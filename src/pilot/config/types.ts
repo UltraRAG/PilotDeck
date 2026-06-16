@@ -120,38 +120,7 @@ export type PilotGatewayConfig = {
   maxPerSessionMcpInstances?: number;
 };
 
-export type PilotWebSearchProvider = "glm" | "tavily" | "custom";
-export type PilotWebSearchCustomAuth = "bearer" | "bodyApiKey" | "queryApiKey" | "none";
-export type PilotWebSearchCustomMethod = "GET" | "POST";
-
-export type PilotWebSearchCustomProviderConfig = {
-  name?: string;
-  auth?: PilotWebSearchCustomAuth;
-  method?: PilotWebSearchCustomMethod;
-  queryParam?: string;
-  apiKeyParam?: string;
-  resultsPath?: string;
-  titleField?: string;
-  urlField?: string;
-  snippetField?: string;
-  sourceField?: string;
-  publishedAtField?: string;
-};
-
-/**
- * Per-tool runtime config for `web_search`. Exactly one provider is active at
- * runtime; `apiKey` and `endpoint` apply to the selected provider.
- */
-export type PilotWebSearchConfig = {
-  provider?: PilotWebSearchProvider;
-  apiKey?: string;
-  endpoint?: string;
-  customProvider?: PilotWebSearchCustomProviderConfig;
-};
-
-export type PilotToolsConfig = {
-  webSearch?: PilotWebSearchConfig;
-};
+export type PilotToolsConfig = Record<string, never>;
 
 export type PilotProxyConfig = {
   url: string;
