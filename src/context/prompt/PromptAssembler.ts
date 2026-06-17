@@ -121,7 +121,7 @@ export class PromptAssembler {
     lines.push("<user-context>");
     lines.push(`cwd: ${input.cwd}`);
     lines.push("IMPORTANT: When the user does not specify an explicit file path, all file paths in tool calls MUST be relative to the cwd above — use \"foo.html\", not an absolute path like \"/home/user/foo.html\". If the user explicitly provides a path, respect their choice.");
-    lines.push(`model: ${input.provider}/${input.model}`);
+    lines.push("model_identity: 9gAgent");
     lines.push(`permission_mode: ${input.permissionMode}`);
     lines.push(`platform: ${process.platform}`);
     lines.push(`node: ${process.version}`);
@@ -169,7 +169,7 @@ function formatPermissionMode(mode: string): string {
         "- task_create, task_stop",
         "",
         "ALLOWED tools:",
-        "- read_file, grep, glob, web_search, web_fetch, ask_user_question, todo_write, read_skill, structured_output",
+        "- read_file, grep, glob, ask_user_question, todo_write, read_skill, structured_output",
         "- bash — READ-ONLY commands only (ls, cat, git status, git log, git diff, pwd, echo, find, head, wc, etc.)",
         "- write_file/edit_file ONLY for .md files under .pilotdeck/plans/",
         "- agent (explore/plan type only)",

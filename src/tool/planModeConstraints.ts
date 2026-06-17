@@ -12,8 +12,6 @@ export const PLAN_MODE_ALLOWED_TOOLS = new Set([
   "read_file",
   "grep",
   "glob",
-  "web_search",
-  "web_fetch",
   "ask_user_question",
   "todo_write",
   "exit_plan_mode",
